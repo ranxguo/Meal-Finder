@@ -26,7 +26,7 @@ const search = document.getElementById('search'),
             resultHeading.innerHTML = `<p>There are no search results. Try again! </p>`
           } else {
             mealsElement.innerHTML = data.meals.map(meal => `
-              <div class="meal">
+              <div class="meal" onclick="location.href='#single_meal'">
                 <img src="${meal.strMealThumb}" alt="${meal.strMeal}"/>
                 <div class="meal-info" data-mealID="${meal.idMeal}">
                   <h3>${meal.strMeal}</h3>
@@ -99,23 +99,21 @@ const search = document.getElementById('search'),
     `;
   }
 
+  function getMeals(e) {
+
+      if(e.target.getAttribute('data-mealid') === null) {
+        const mealID = e.target.offsetParent.getAttribute('data-mealid');
+        getMealById(mealID);
+      } else {
+        const mealID = e.target.getAttribute('data-mealid');
+        getMealById(mealID);
+      }
+
+    }
+
+
   // Event Listeners
   submit.addEventListener('submit', searchMeal);
   random.addEventListener('click', getRandomMeal);
 
-  mealsElement.addEventListener('click', e => {
-    //console.log(e);
-    const mealInfo = e.path.find(item => {
-      //console.log(item.classList);
-      if(item.classList) {
-        return item.classList.contains('meal-info');
-      } else {
-        return false;
-      }
-    });
-
-    if(mealInfo) {
-      const mealID = mealInfo.getAttribute('data-mealid');
-      getMealById(mealID);
-    }
-  });
+  mealsElement.addEventListener('click', getMeals);
